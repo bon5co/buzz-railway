@@ -18,6 +18,8 @@ jobs:
             image: buzz-railway
           - dockerfile: Dockerfile.minio
             image: buzz-railway-minio
+          - dockerfile: Dockerfile.postgres
+            image: buzz-railway-postgres
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-buildx-action@v3

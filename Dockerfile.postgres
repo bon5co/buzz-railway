@@ -1,0 +1,17 @@
+# Postgres for Buzz, packaged for Railway.
+#
+# Exists only to hold three literals. Railway's template generator keeps a
+# variable's default *only* when the live value is a Railway expression --
+# literals are dropped, and the variable then publishes as required-with-no-
+# value, so the deploy form opens asking the user to type settings the image
+# already knows. Baking them in keeps the form down to the one field that is
+# genuinely the deployer's.
+#
+# PGDATA matters most: the base image defaults it to /var/lib/postgresql/18/docker,
+# which is NOT under this template's volume mount, so an unset PGDATA writes the
+# database outside the volume and loses it on the next redeploy.
+FROM ghcr.io/railwayapp-templates/postgres-ssl:18
+
+ENV POSTGRES_USER=buzz \
+    POSTGRES_DB=buzz \
+    PGDATA=/var/lib/postgresql/data/pgdata
