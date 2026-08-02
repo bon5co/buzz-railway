@@ -12,7 +12,7 @@ FROM minio/minio:RELEASE.2025-09-07T16-13-09Z
 ENV MINIO_ROOT_USER=buzz \
     MINIO_BROWSER=off \
     BUZZ_S3_BUCKET=buzz-media \
-    PORT=9000
+    MINIO_PORT=9000
 
 COPY minio-boot.sh /usr/local/bin/minio-boot
 RUN chmod 0755 /usr/local/bin/minio-boot

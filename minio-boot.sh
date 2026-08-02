@@ -13,7 +13,13 @@ set -eu
 
 BUCKET="${BUZZ_S3_BUCKET:-buzz-media}"
 DATA="${MINIO_DATA_DIR:-/data/minio}"
-LISTEN_PORT="${PORT:-9000}"
+# Deliberately NOT $PORT. Railway injects PORT=8080 into every service, so an
+# object store that honours $PORT silently listens on 8080 while the relay dials
+# the :9000 in BUZZ_S3_ENDPOINT -- the store comes up healthy, the relay's A3
+# conformance probe cannot reach it, and the relay is the only thing that looks
+# broken. This service is private (no public domain), so there is no edge proxy
+# that needs $PORT to be honoured.
+LISTEN_PORT="${MINIO_PORT:-9000}"
 
 # mc writes its config under $HOME, which on Railway is a mounted volume whose
 # root dir is owned by uid 0; keep it on the container filesystem instead.
