@@ -54,4 +54,24 @@ if ! [ -w "$GIT_DIR" ]; then
   exit 1
 fi
 
+# Wait for the object store. Railway starts every service at once, and the relay
+# runs its git object-store conformance probe (the A3 gate) during boot: if the
+# store is not answering yet the probe fails and the process EXITS. It would be
+# restarted and would eventually come up, but the first deploy is the one the
+# deployer is watching, and "git conformance probe failed" reads like a broken
+# template rather than a service that started 20 seconds early.
+if [ -n "${BUZZ_S3_ENDPOINT:-}" ]; then
+  attempt=0
+  until curl -s -o /dev/null --max-time 3 "$BUZZ_S3_ENDPOINT" 2>/dev/null; do
+    attempt=$((attempt + 1))
+    if [ "$attempt" -ge 60 ]; then
+      echo "buzz: object store at $BUZZ_S3_ENDPOINT still unreachable after 120s" >&2
+      echo "buzz: starting anyway so the conformance probe reports the real error." >&2
+      break
+    fi
+    [ "$attempt" = 1 ] && echo "buzz: waiting for object store at $BUZZ_S3_ENDPOINT ..."
+    sleep 2
+  done
+fi
+
 exec "$@"
