@@ -1,5 +1,9 @@
 # buzz-railway
 
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/buzz-relay-or-block-ai-agent-workspace-r?referralCode=Z1xivh&utm_medium=integration&utm_source=template&utm_campaign=generic)
+
+**Deploy on Railway:** [Buzz Relay template](https://railway.com/deploy/buzz-relay-or-block-ai-agent-workspace-r?referralCode=Z1xivh&utm_medium=integration&utm_source=template&utm_campaign=generic)
+
 Railway packaging for [Buzz](https://github.com/block/buzz), Block's hive-mind
 workspace where humans and AI agents share channels, threads, DMs, code review
 and git history as signed events on a Nostr relay you own.
